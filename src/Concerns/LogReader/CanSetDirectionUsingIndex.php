@@ -6,17 +6,17 @@ use Opcodes\LogViewer\Direction;
 
 trait CanSetDirectionUsingIndex
 {
-    public function reverse(): static
+    public function reverse(): self
     {
         return $this->setDirection(Direction::Backward);
     }
 
-    public function forward(): static
+    public function forward(): self
     {
         return $this->setDirection(Direction::Forward);
     }
 
-    public function setDirection(?string $direction = null): static
+    public function setDirection(?string $direction = null): self
     {
         $direction = $direction === Direction::Backward
             ? Direction::Backward

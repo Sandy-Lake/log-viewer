@@ -11,7 +11,7 @@ trait KeepsInstances
      */
     public static array $_instances = [];
 
-    public static function instance(LogFile $file): static
+    public static function instance(LogFile $file): self
     {
         if (! isset(static::$_instances[$file->path])) {
             static::$_instances[$file->path] = new static($file);

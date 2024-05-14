@@ -8,37 +8,37 @@ use Opcodes\LogViewer\Logs\Log;
 
 interface LogReaderInterface
 {
-    public static function instance(LogFile $file): static;
+    public static function instance(LogFile $file): self;
 
     public static function clearInstance(LogFile $file): void;
 
     public static function clearInstances(): void;
 
     // Search/querying
-    public function search(?string $query = null): static;
+    public function search(?string $query = null): self;
 
-    public function skip(int $number): static;
+    public function skip(int $number): self;
 
-    public function limit(int $number): static;
+    public function limit(int $number): self;
 
     // Direction
-    public function reverse(): static;
+    public function reverse(): self;
 
-    public function forward(): static;
+    public function forward(): self;
 
-    public function setDirection(?string $direction = null): static;
+    public function setDirection(?string $direction = null): self;
 
     public function getLevelCounts(): array;
 
-    public function only($levels = null): static;
+    public function only($levels = null): self;
 
-    public function setLevels($levels = null): static;
+    public function setLevels($levels = null): self;
 
-    public function allLevels(): static;
+    public function allLevels(): self;
 
-    public function except($levels = null): static;
+    public function except($levels = null): self;
 
-    public function exceptLevels($levels = null): static;
+    public function exceptLevels($levels = null): self;
 
     // Retrieving actual logs
     public function get(?int $limit = null): array;
@@ -51,10 +51,10 @@ interface LogReaderInterface
     public function total(): int;
 
     // Functional
-    public function reset(): static;
+    public function reset(): self;
 
     // We should decouple scanning from the LogReader
-    public function scan(?int $maxBytesToScan = null, bool $force = false): static;
+    public function scan(?int $maxBytesToScan = null, bool $force = false): self;
 
     public function numberOfNewBytes(): int;
 

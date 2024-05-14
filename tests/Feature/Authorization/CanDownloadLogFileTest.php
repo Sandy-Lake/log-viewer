@@ -37,12 +37,12 @@ test('cannot download a file that\'s not found', function () {
 
 test('"downloadLogFile" gate can prevent file download', function () {
     generateLogFiles([$fileName = 'laravel.log']);
-    Gate::define('downloadLogFile', fn (mixed $user) => false);
+    Gate::define('downloadLogFile', fn ($user) => false);
 
     assertCannotDownloadFile($fileName);
 
     // now let's allow access again
-    Gate::define('downloadLogFile', fn (mixed $user) => true);
+    Gate::define('downloadLogFile', fn ($user) => true);
 
     assertCanDownloadFile($fileName);
 });
@@ -51,7 +51,7 @@ test('"downloadLogFile" gate is supplied with a log file object', function () {
     generateLogFiles([$fileName = 'laravel.log']);
     $gateChecked = false;
 
-    Gate::define('downloadLogFile', function (mixed $user, LogFile $file) use ($fileName, &$gateChecked) {
+    Gate::define('downloadLogFile', function ($user, LogFile $file) use ($fileName, &$gateChecked) {
         expect($file)->toBeInstanceOf(LogFile::class)
             ->name->toBe($fileName);
         $gateChecked = true;

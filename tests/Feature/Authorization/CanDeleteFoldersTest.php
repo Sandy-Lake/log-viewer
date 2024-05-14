@@ -23,14 +23,14 @@ test('deleting a folder that\'s not found still returns a successful response', 
 test('"deleteLogFolder" gate can prevent folder deletion', function () {
     generateLogFiles([$fileName = 'laravel.log']);
     $folder = LogViewer::getFolder('');
-    Gate::define('deleteLogFolder', fn (mixed $user, ?LogFolder $folder = null) => false);
+    Gate::define('deleteLogFolder', fn ($user, ?LogFolder $folder = null) => false);
 
     $this->deleteJson(route('log-viewer.folders.delete', $folder->identifier))
         ->assertForbidden();
     test()->assertFileExists(storage_path('logs/'.$fileName));
 
     // now let's allow access again
-    Gate::define('deleteLogFolder', fn (mixed $user, ?LogFolder $folder = null) => true);
+    Gate::define('deleteLogFolder', fn ($user, ?LogFolder $folder = null) => true);
 
     $this->deleteJson(route('log-viewer.folders.delete', $folder->identifier))
         ->assertOk();
@@ -43,7 +43,7 @@ test('"deleteLogFolder" gate is supplied with a log folder object', function () 
     $gateChecked = false;
 
     //                                              we use "mixed" here because we don't have a real User object in our tests
-    Gate::define('deleteLogFolder', function (mixed $user, LogFolder $folder) use ($expectedFolder, &$gateChecked) {
+    Gate::define('deleteLogFolder', function ($user, LogFolder $folder) use ($expectedFolder, &$gateChecked) {
         expect($folder)->toBeInstanceOf(LogFolder::class)
             ->identifier->toBe($expectedFolder->identifier);
         $gateChecked = true;
@@ -60,7 +60,7 @@ test('"deleteLogFolder" gate is supplied with a log folder object', function () 
 test('individual file deletion gate is also checked before deleting the files', function () {
     generateLogFiles([$allowed = 'laravel.log', $notAllowed = 'forbidden.log']);
     $folder = LogViewer::getFolder('');
-    Gate::define('deleteLogFile', fn (mixed $user, ?LogFile $file) => $file->name !== $notAllowed);
+    Gate::define('deleteLogFile', fn ($user, ?LogFile $file) => $file->name !== $notAllowed);
 
     $this->deleteJson(route('log-viewer.folders.delete', $folder->identifier))
         ->assertOk();

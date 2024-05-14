@@ -10,10 +10,12 @@ class LevelClass
     const WARNING = 'warning';
     const DANGER = 'danger';
     const NONE = 'none';
+    public string $value;
 
     public function __construct(
-        public string $value,
+        string $value
     ) {
+        $this->value = $value;
     }
 
     public static function from(?string $value = null): LevelClass
@@ -33,32 +35,32 @@ class LevelClass
         ];
     }
 
-    public static function success(): static
+    public static function success(): self
     {
         return new static(static::SUCCESS);
     }
 
-    public static function notice(): static
+    public static function notice(): self
     {
         return new static(static::NOTICE);
     }
 
-    public static function info(): static
+    public static function info(): self
     {
         return new static(static::INFO);
     }
 
-    public static function warning(): static
+    public static function warning(): self
     {
         return new static(static::WARNING);
     }
 
-    public static function danger(): static
+    public static function danger(): self
     {
         return new static(static::DANGER);
     }
 
-    public static function none(): static
+    public static function none(): self
     {
         return new static(static::NONE);
     }

@@ -34,7 +34,7 @@ trait KeepsFileHandle
      *
      * @throws CannotOpenFileException
      */
-    protected function openFile(): static
+    protected function openFile(): self
     {
         if ($this->isFileOpen()) {
             return $this;
@@ -62,7 +62,7 @@ trait KeepsFileHandle
      *
      * @throws CannotCloseFileException
      */
-    protected function closeFile(): static
+    protected function closeFile(): self
     {
         if ($this->isFileClosed()) {
             return $this;

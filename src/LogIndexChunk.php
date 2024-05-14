@@ -7,12 +7,15 @@ class LogIndexChunk
     protected int $earliestTimestamp;
     protected int $latestTimestamp;
     protected array $levelCounts = [];
+    public array $data;
+    public int $index;
+    public int $size;
 
-    public function __construct(
-        public array $data,
-        public int $index,
-        public int $size,
-    ) {
+    public function __construct(array $data, int $index, int $size)
+    {
+        $this->data = $data;
+        $this->index = $index;
+        $this->size = $size;
     }
 
     public static function fromDefinitionArray(array $definition): LogIndexChunk

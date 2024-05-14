@@ -9,7 +9,11 @@ it('can get the earliest date from the log index', function () {
 
     $earliestDate = $logIndex->getEarliestDate();
 
-    expect($earliestDate?->timestamp)->toBe($earliestLog[1]->timestamp);
+    $expectedTimestamp = null;
+    if ($earliestDate !== null) {
+        $expectedTimestamp = $earliestDate->timestamp;
+    }
+    expect($expectedTimestamp)->toBe($earliestLog[1]->timestamp);
 });
 
 it('can get the latest date from the log index', function () {
@@ -21,7 +25,11 @@ it('can get the latest date from the log index', function () {
 
     $earliestDate = $logIndex->getLatestDate();
 
-    expect($earliestDate?->timestamp)->toBe($latestLog[1]->timestamp);
+    $expectedTimestamp = null;
+    if ($earliestDate !== null) {
+        $expectedTimestamp = $earliestDate->timestamp;
+    }
+    expect($expectedTimestamp)->toBe($latestLog[1]->timestamp);
 });
 
 it('can get the earliest date after severity filter is applied', function () {
@@ -33,7 +41,11 @@ it('can get the earliest date after severity filter is applied', function () {
 
     $earliestDate = $logIndex->forLevels('debug')->getEarliestDate();
 
-    expect($earliestDate?->timestamp)->toBe($earliestDebugLog[1]->timestamp);
+    $expectedTimestamp = null;
+    if ($earliestDate !== null) {
+        $expectedTimestamp = $earliestDate->timestamp;
+    }
+    expect($expectedTimestamp)->toBe($earliestDebugLog[1]->timestamp);
 });
 
 it('can get the latest date after severity filter is applied', function () {
@@ -45,5 +57,9 @@ it('can get the latest date after severity filter is applied', function () {
 
     $latestDate = $logIndex->forLevels('debug')->getLatestDate();
 
-    expect($latestDate?->timestamp)->toBe($latestDebugLog[1]->timestamp);
+    $expectedTimestamp = null;
+    if ($latestDate !== null) {
+        $expectedTimestamp = $latestDate->timestamp;
+    }
+    expect($expectedTimestamp)->toBe($latestDebugLog[1]->timestamp);
 });

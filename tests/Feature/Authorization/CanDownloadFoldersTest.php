@@ -40,12 +40,12 @@ test('cannot download a folder that\'s not found', function () {
 test('"downloadLogFolder" gate can prevent folder download', function () {
     generateLogFiles([$fileName = 'laravel.log']);
     $folder = LogViewer::getFolder('');
-    Gate::define('downloadLogFolder', fn (mixed $user) => false);
+    Gate::define('downloadLogFolder', fn ($user) => false);
 
     assertCannotDownloadFolder($folder->identifier);
 
     // now let's allow access again
-    Gate::define('downloadLogFolder', fn (mixed $user) => true);
+    Gate::define('downloadLogFolder', fn ($user) => true);
 
     assertCanDownloadFolder($folder->identifier, 'root.zip');
 });
@@ -55,7 +55,7 @@ test('"downloadLogFolder" gate is supplied with a log folder object', function (
     $expectedFolder = LogViewer::getFolder('');
     $gateChecked = false;
 
-    Gate::define('downloadLogFolder', function (mixed $user, LogFolder $folder) use ($expectedFolder, &$gateChecked) {
+    Gate::define('downloadLogFolder', function ($user, LogFolder $folder) use ($expectedFolder, &$gateChecked) {
         expect($folder)->toBeInstanceOf(LogFolder::class)
             ->identifier->toBe($expectedFolder->identifier);
         $gateChecked = true;

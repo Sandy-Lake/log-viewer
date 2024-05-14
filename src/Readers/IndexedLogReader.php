@@ -35,7 +35,7 @@ class IndexedLogReader extends BaseLogReader implements LogReaderInterface
         return $this->file->index($this->query);
     }
 
-    public function lazyScanning($lazy = true): static
+    public function lazyScanning($lazy = true): self
     {
         $this->lazyScanning = $lazy;
 
@@ -48,7 +48,7 @@ class IndexedLogReader extends BaseLogReader implements LogReaderInterface
      *
      * @throws CannotOpenFileException
      */
-    public function scan(?int $maxBytesToScan = null, bool $force = false): static
+    public function scan(?int $maxBytesToScan = null, bool $force = false): self
     {
         if (is_null($maxBytesToScan)) {
             $maxBytesToScan = LogViewer::lazyScanChunkSize();
@@ -159,7 +159,7 @@ class IndexedLogReader extends BaseLogReader implements LogReaderInterface
         return $this->reset();
     }
 
-    public function reset(): static
+    public function reset(): self
     {
         $this->index()->reset();
 

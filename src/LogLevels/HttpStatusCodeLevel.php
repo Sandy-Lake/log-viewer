@@ -4,9 +4,12 @@ namespace Opcodes\LogViewer\LogLevels;
 
 class HttpStatusCodeLevel implements LevelInterface
 {
+    public string $value;
+
     public function __construct(
-        public string $value,
+        string $value
     ) {
+        $this->value = $value;
     }
 
     public static function from(?string $value = null): LevelInterface

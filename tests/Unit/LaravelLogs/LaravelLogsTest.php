@@ -155,7 +155,11 @@ it('handles missing message', function () {
 
     $log = new LaravelLog($text, 'laravel.log', 0, 0);
 
-    assertEquals('2022-11-07 17:51:33', $log->datetime?->toDateTimeString());
+    $dateTimeString = null;
+    if ($log->datetime !== null) {
+        $dateTimeString = $log->datetime->toDateTimeString();
+    }
+    assertEquals('2022-11-07 17:51:33', $dateTimeString);
     assertEquals(LaravelLogLevel::Error, $log->level);
     assertEquals('production', $log->extra['environment']);
     assertEquals('', $log->getOriginalText());

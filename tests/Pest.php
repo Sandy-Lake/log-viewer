@@ -64,15 +64,18 @@ function dummyLogData(?int $lines = null, string $type = LogType::LARAVEL): stri
         $lines = rand(1, 10);
     }
 
-    return implode(PHP_EOL, array_map(
-        fn ($_) => match ($type) {
-            LogType::LARAVEL => makeLaravelLogEntry(),
-            LogType::HTTP_ACCESS => makeHttpAccessLogEntry(),
-            LogType::HTTP_ERROR_APACHE => makeHttpApacheErrorLogEntry(),
-            LogType::HTTP_ERROR_NGINX => makeHttpNginxErrorLogEntry(),
-        },
-        range(1, $lines)
-    ));
+    return implode(PHP_EOL, array_map(function ($_) use ($type) {
+        switch ($type) {
+            case LogType::LARAVEL:
+                return makeLaravelLogEntry();
+            case LogType::HTTP_ACCESS:
+                return makeHttpAccessLogEntry();
+            case LogType::HTTP_ERROR_APACHE:
+                return makeHttpApacheErrorLogEntry();
+            case LogType::HTTP_ERROR_NGINX:
+                return makeHttpNginxErrorLogEntry();
+        }
+    }, range(1, $lines)));
 }
 
 function clearGeneratedLogFiles(): void
