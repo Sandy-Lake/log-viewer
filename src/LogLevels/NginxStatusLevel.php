@@ -41,22 +41,29 @@ class NginxStatusLevel implements LevelInterface
 
     public function getName(): string
     {
-        return match ($this->value) {
-            self::Warning => 'Warning',
-            self::Critical => 'Critical',
-            self::Emergency => 'Emergency',
-            default => ucfirst($this->value),
-        };
+        switch ($this->value) {
+            case self::Warning:
+                return 'Warning';
+            case self::Critical:
+                return 'Critical';
+            case self::Emergency:
+                return 'Emergency';
+            default:
+                return ucfirst($this->value);
+        }
     }
 
     public function getClass(): LevelClass
     {
-        return match ($this->value) {
-            self::Debug, self::Info, self::Notice => LevelClass::info(),
-            self::Warning => LevelClass::warning(),
-            self::Error, self::Critical, self::Alert, self::Emergency => LevelClass::danger(),
-            default => LevelClass::none(),
-        };
+        if ($this->value === self::Debug || $this->value === self::Info || $this->value === self::Notice) {
+            return LevelClass::info();
+        } elseif ($this->value === self::Warning) {
+            return LevelClass::warning();
+        } elseif ($this->value === self::Error || $this->value === self::Critical || $this->value === self::Alert || $this->value === self::Emergency) {
+            return LevelClass::danger();
+        } else {
+            return LevelClass::none();
+        }
     }
 
     public static function caseValues(): array

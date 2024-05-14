@@ -20,9 +20,9 @@ class LogViewerService
     public static string $logReaderClass = IndexedLogReader::class;
     protected ?Collection $_cachedFiles = null;
     protected string $_cachedTimezone;
-    protected mixed $authCallback;
+    protected $authCallback;
     protected int $maxLogSizeToDisplay = self::DEFAULT_MAX_LOG_SIZE_TO_DISPLAY;
-    protected mixed $hostsResolver;
+    protected $hostsResolver;
     protected string $layout = 'log-viewer::index';
 
     public function timezone(): string
@@ -63,16 +63,16 @@ class LogViewerService
         $files = [];
 
         foreach (config('log-viewer.include_files', []) as $pattern) {
-            if (! str_starts_with($pattern, DIRECTORY_SEPARATOR)) {
-                $pattern = $baseDir.$pattern;
+            if (strpos($pattern, DIRECTORY_SEPARATOR) !== 0) {
+                $pattern = $baseDir . $pattern;
             }
 
             $files = array_merge($files, $this->getFilePathsMatchingPattern($pattern));
         }
 
         foreach (config('log-viewer.exclude_files', []) as $pattern) {
-            if (! str_starts_with($pattern, DIRECTORY_SEPARATOR)) {
-                $pattern = $baseDir.$pattern;
+            if (strpos($pattern, DIRECTORY_SEPARATOR) !== 0) {
+                $pattern = $baseDir . $pattern;
             }
 
             $files = array_diff($files, $this->getFilePathsMatchingPattern($pattern));
@@ -89,7 +89,7 @@ class LogViewerService
     {
         // The GLOB_BRACE flag is not available on some non GNU systems, like Solaris or Alpine Linux.
 
-        if (str_contains($pattern, '**')) {
+        if (strpos($pattern, '**') !== false) {
             return Utils::glob_recursive($pattern);
         }
 
@@ -101,9 +101,6 @@ class LogViewerService
         return Str::finish(realpath(storage_path('logs')), DIRECTORY_SEPARATOR);
     }
 
-    /**
-     * @return LogFileCollection|LogFile[]
-     */
     public function getFiles(): LogFileCollection
     {
         if (! isset($this->_cachedFiles)) {

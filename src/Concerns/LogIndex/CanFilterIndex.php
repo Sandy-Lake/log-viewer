@@ -3,6 +3,7 @@
 namespace Opcodes\LogViewer\Concerns\LogIndex;
 
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 
 trait CanFilterIndex
 {
@@ -29,14 +30,14 @@ trait CanFilterIndex
         return $this->query;
     }
 
-    public function forDateRange(int|CarbonInterface|null $from = null, int|CarbonInterface|null $to = null): self
+    public function forDateRange(?DateTimeInterface $from = null, ?DateTimeInterface $to = null): self
     {
-        if ($from instanceof CarbonInterface) {
-            $from = $from->timestamp;
+        if ($from instanceof DateTimeInterface) {
+            $from = $from->getTimestamp();
         }
 
-        if ($to instanceof CarbonInterface) {
-            $to = $to->timestamp;
+        if ($to instanceof DateTimeInterface) {
+            $to = $to->getTimestamp();
         }
 
         $this->filterFrom = $from;
@@ -45,7 +46,7 @@ trait CanFilterIndex
         return $this;
     }
 
-    public function forLevels(string|array|null $levels = null): self
+    public function forLevels($levels = null): self
     {
         if (is_string($levels)) {
             $levels = [$levels];
@@ -60,7 +61,7 @@ trait CanFilterIndex
         return $this;
     }
 
-    public function exceptLevels(string|array|null $levels = null): self
+    public function exceptLevels($levels = null): self
     {
         if (is_null($levels)) {
             $this->excludeLevels = null;

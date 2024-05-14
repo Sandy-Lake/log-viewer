@@ -14,10 +14,8 @@ abstract class BaseLogReader
 
     protected LogFile $file;
 
-    /** @var string|Log */
     protected string $logClass;
 
-    /** @var string|LevelInterface */
     protected string $levelClass;
 
     public function __construct(LogFile $file)

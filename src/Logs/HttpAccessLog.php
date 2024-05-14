@@ -36,7 +36,9 @@ class HttpAccessLog extends Log
         ];
 
         $datetime = static::parseDateTime($matches['datetime'] ?? null);
-        $this->datetime = $datetime?->setTimezone(LogViewer::timezone());
+        if ($datetime !== null) {
+            $this->datetime = $datetime->setTimezone(LogViewer::timezone());
+        }
 
         $this->level = $matches['status_code'] ?? null;
         $this->message = sprintf(

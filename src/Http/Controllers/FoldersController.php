@@ -54,7 +54,14 @@ class FoldersController
 
         abort_if(is_null($folder), 404);
 
-        $folder?->files()->each->clearCache();
+        if ($folder !== null) {
+            $files = $folder->files();
+            if ($files !== null) {
+                $files->each(function ($file) {
+                    $file->clearCache();
+                });
+            }
+        }
 
         return response()->json(['success' => true]);
     }

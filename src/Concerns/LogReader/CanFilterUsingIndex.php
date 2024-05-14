@@ -14,26 +14,21 @@ trait CanFilterUsingIndex
      *
      * @alias setLevels
      *
-     * @param  string|array|null  $levels
+     * @return CanFilterUsingIndex
      */
-    public function only($levels = null): static
+    public function only($levels = null): self
     {
         return $this->setLevels($levels);
     }
 
-    /**
-     * Load only the provided log levels
-     *
-     * @param  string|array|null  $levels
-     */
-    public function setLevels($levels = null): static
+    public function setLevels($levels = null): self
     {
         $this->index()->forLevels($levels);
 
         return $this;
     }
 
-    public function allLevels(): static
+    public function allLevels(): self
     {
         return $this->setLevels(null);
     }
@@ -42,55 +37,51 @@ trait CanFilterUsingIndex
      * Load all log levels except the provided ones.
      *
      * @alias exceptLevels
-     *
-     * @param  string|array|null  $levels
      */
-    public function except($levels = null): static
+    public function except($levels = null): self
     {
         return $this->exceptLevels($levels);
     }
 
     /**
      * Load all log levels except the provided ones.
-     *
-     * @param  string|array|null  $levels
      */
-    public function exceptLevels($levels = null): static
+    public function exceptLevels($levels = null): self
     {
         $this->index()->exceptLevels($levels);
 
         return $this;
     }
 
-    public function skip(int $number): static
+    public function skip(int $number): self
     {
         $this->index()->skip($number);
 
         return $this;
     }
 
-    public function limit(int $number): static
+    public function limit(int $number): self
     {
         $this->index()->limit($number);
 
         return $this;
     }
 
-    public function search(?string $query = null): static
+    public function search(?string $query = null): self
     {
         return $this->setQuery($query);
     }
 
-    protected function setQuery(?string $query = null): static
+    protected function setQuery(?string $query = null): self
     {
         $this->closeFile();
 
-        if (! empty($query) && str_starts_with($query, 'log-index:')) {
+        if (!empty($query) && strpos($query, 'log-index:') === 0) {
             $this->query = null;
             $this->only(null);
             $this->onlyShowIndex = intval(explode(':', $query)[1]);
-        } elseif (! empty($query)) {
-            $query = '~'.$query.'~iu';
+        } elseif (!empty($query)) {
+            $query = '~' . $query . '~iu';
 
             Utils::validateRegex($query);
 

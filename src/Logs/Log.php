@@ -69,7 +69,7 @@ class Log
         if ($result) {
             try {
                 $datetime = static::parseDateTime($matches[static::$regexDatetimeKey] ?? null);
-                $timestamp = $datetime?->timestamp;
+                $timestamp = $datetime !== null ? $datetime->timestamp : null;
 
                 $level = $matches[static::$regexLevelKey] ?? '';
             } catch (\Exception $exception) {
@@ -108,7 +108,9 @@ class Log
     protected function fillMatches(array $matches = []): void
     {
         $datetime = static::parseDateTime($matches[static::$regexDatetimeKey] ?? null);
-        $this->datetime = $datetime?->setTimezone(LogViewer::timezone());
+        if ($datetime !== null) {
+            $this->datetime = $datetime->setTimezone(LogViewer::timezone());
+        }
 
         $this->level = $matches[static::$regexLevelKey] ?? null;
         $this->message = trim($matches[static::$regexMessageKey] ?? null);
@@ -117,7 +119,7 @@ class Log
 
     public function getTimestamp(): int
     {
-        return $this->datetime?->getTimestamp() ?? 0;
+        return $this->datetime !== null ? $this->datetime->getTimestamp() : 0;
     }
 
     public function getLevel(): LevelInterface

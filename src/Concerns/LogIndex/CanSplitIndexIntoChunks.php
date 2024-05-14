@@ -64,7 +64,7 @@ trait CanSplitIndexIntoChunks
     {
         $currentChunk = $this->getCurrentChunk();
 
-        if ($index === $currentChunk?->index) {
+        if ($currentChunk !== null && $index === $currentChunk->index) {
             $chunkData = $currentChunk->data ?? [];
         } else {
             $chunkData = $this->getChunkDataFromCache($index);

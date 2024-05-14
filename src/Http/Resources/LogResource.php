@@ -24,8 +24,8 @@ class LogResource extends JsonResource
             'level_name' => $level->getName(),
             'level_class' => $level->getClass()->value,
 
-            'datetime' => $this->datetime?->toDateTimeString(),
-            'time' => $this->datetime?->format('H:i:s'),
+            'datetime' => $this->datetime !== null ? $this->datetime->toDateTimeString() : null,
+            'time' => $this->datetime !== null ? $this->datetime->format('H:i:s') : null,
             'message' => $this->message,
             'context' => $this->context,
             'extra' => $this->extra,

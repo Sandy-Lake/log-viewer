@@ -41,9 +41,6 @@ class LogTypeRegistrar
         array_unshift($this->logTypes, [$type, $class]);
     }
 
-    /**
-     * @return string|Log|null
-     */
     public function getClass(string $type): ?string
     {
         foreach ($this->logTypes as $logType) {
@@ -55,7 +52,7 @@ class LogTypeRegistrar
         return null;
     }
 
-    public function guessTypeFromFirstLine(LogFile|string $textOrFile): ?string
+    public function guessTypeFromFirstLine($textOrFile): ?string
     {
         if ($textOrFile instanceof LogFile) {
             $file = $textOrFile;
@@ -94,17 +91,17 @@ class LogTypeRegistrar
 
     public function guessTypeFromFileName(LogFile $file): ?string
     {
-        if (str_contains($file->name, 'laravel')) {
+        if (strpos($file->name, 'laravel') !== false) {
             return LogType::LARAVEL;
-        } elseif (str_contains($file->name, 'php-fpm')) {
+        } elseif (strpos($file->name, 'php-fpm') !== false) {
             return LogType::PHP_FPM;
-        } elseif (str_contains($file->name, 'access')) {
+        } elseif (strpos($file->name, 'access') !== false) {
             return LogType::HTTP_ACCESS;
-        } elseif (str_contains($file->name, 'postgres')) {
+        } elseif (strpos($file->name, 'postgres') !== false) {
             return LogType::POSTGRES;
-        } elseif (str_contains($file->name, 'redis')) {
+        } elseif (strpos($file->name, 'redis') !== false) {
             return LogType::REDIS;
-        } elseif (str_contains($file->name, 'supervisor')) {
+        } elseif (strpos($file->name, 'supervisor') !== false) {
             return LogType::SUPERVISOR;
         }
 

@@ -9,8 +9,9 @@ class LogFileDeleted
 {
     use Dispatchable;
 
-    public function __construct(
-        public LogFile $file
-    ) {
+    public LogFile $file;
+
+    public function __construct(LogFile $file) {
+        $this->file = $file;
     }
 }

@@ -21,16 +21,28 @@ class RedisLog extends Log
     {
         parent::fillMatches($matches);
 
+        $roleDescription = null;
+        if (isset($matches['role_letter'])) {
+            switch ($matches['role_letter']) {
+                case 'X':
+                    $roleDescription = 'sentinel';
+                    break;
+                case 'S':
+                    $roleDescription = 'slave';
+                    break;
+                case 'M':
+                    $roleDescription = 'master';
+                    break;
+                case 'C':
+                    $roleDescription = 'RDB/AOF writing child';
+                    break;
+            }
+        }
+
         $this->context = [
             'pid' => intval($matches['pid'] ?? null),
             'role' => $matches['role_letter'],
-            'role_description' => match ($matches['role_letter'] ?? null) {
-                'X' => 'sentinel',
-                'S' => 'slave',
-                'M' => 'master',
-                'C' => 'RDB/AOF writing child',
-                default => null,
-            },
+            'role_description' => $roleDescription,
         ];
     }
 }

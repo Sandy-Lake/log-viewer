@@ -38,7 +38,10 @@ class LaravelLog extends Log
 
         preg_match(static::regexPattern(), array_shift($firstLineSplit), $matches);
 
-        $this->datetime = Carbon::parse($matches[1])?->setTimezone(LogViewer::timezone());
+        $carbonDateTime = Carbon::parse($matches[1]);
+        if ($carbonDateTime !== null) {
+            $this->datetime = $carbonDateTime->setTimezone(LogViewer::timezone());
+        }
 
         // $matches[2] contains microseconds, which is already handled
         // $matches[3] contains timezone offset, which is already handled
@@ -68,7 +71,7 @@ class LaravelLog extends Log
             foreach ($lines as $line) {
                 $shouldExclude = false;
                 foreach ($excludes as $excludePattern) {
-                    if (str_starts_with($line, '#') && str_contains($line, $excludePattern)) {
+                    if (strpos($line, '#') === 0 && strpos($line, $excludePattern) !== false) {
                         $shouldExclude = true;
                         break;
                     }
@@ -163,6 +166,19 @@ class LaravelLog extends Log
 
         $message = Message::fromString($part);
 
+        $html = null;
+        $text = null;
+
+        $htmlPart = $message->getHtmlPart();
+        if ($htmlPart !== null) {
+            $html = $htmlPart->getContent();
+        }
+
+        $textPart = $message->getTextPart();
+        if ($textPart !== null) {
+            $text = $textPart->getContent();
+        }
+
         $this->extra['mail_preview'] = [
             'id' => $message->getId() ?: null,
             'subject' => $message->getSubject(),
@@ -174,8 +190,8 @@ class LaravelLog extends Log
                 'filename' => $attachment->getFilename(),
                 'size_formatted' => Utils::bytesForHumans($attachment->getSize()),
             ], $message->getAttachments()),
-            'html' => $message->getHtmlPart()?->getContent(),
-            'text' => $message->getTextPart()?->getContent(),
+            'html' => $html,
+            'text' => $text,
             'size_formatted' => Utils::bytesForHumans($message->getSize()),
         ];
     }

@@ -34,19 +34,29 @@ class LogType
     {
         $class = $this->logClass();
 
-        return match ($this->value) {
-            self::LARAVEL => 'Laravel',
-            self::HTTP_ACCESS => 'HTTP Access',
-            self::HTTP_ERROR_APACHE => 'HTTP Error (Apache)',
-            self::HTTP_ERROR_NGINX => 'HTTP Error (Nginx)',
-            self::HORIZON_OLD => 'Horizon (Old)',
-            self::HORIZON => 'Horizon',
-            self::PHP_FPM => 'PHP-FPM',
-            self::POSTGRES => 'Postgres',
-            self::REDIS => 'Redis',
-            self::SUPERVISOR => 'Supervisor',
-            default => isset($class) ? ($class::$name ?? 'Unknown') : 'Unknown',
-        };
+        if ($this->value === self::LARAVEL) {
+            return 'Laravel';
+        } elseif ($this->value === self::HTTP_ACCESS) {
+            return 'HTTP Access';
+        } elseif ($this->value === self::HTTP_ERROR_APACHE) {
+            return 'HTTP Error (Apache)';
+        } elseif ($this->value === self::HTTP_ERROR_NGINX) {
+            return 'HTTP Error (Nginx)';
+        } elseif ($this->value === self::HORIZON_OLD) {
+            return 'Horizon (Old)';
+        } elseif ($this->value === self::HORIZON) {
+            return 'Horizon';
+        } elseif ($this->value === self::PHP_FPM) {
+            return 'PHP-FPM';
+        } elseif ($this->value === self::POSTGRES) {
+            return 'Postgres';
+        } elseif ($this->value === self::REDIS) {
+            return 'Redis';
+        } elseif ($this->value === self::SUPERVISOR) {
+            return 'Supervisor';
+        } else {
+            return isset($class) ? ($class::$name ?? 'Unknown') : 'Unknown';
+        }
     }
 
     /**

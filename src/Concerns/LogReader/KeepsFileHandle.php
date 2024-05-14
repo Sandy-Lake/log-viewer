@@ -7,7 +7,6 @@ use Opcodes\LogViewer\Exceptions\CannotOpenFileException;
 
 trait KeepsFileHandle
 {
-    /** @var resource|null */
     protected $fileHandle = null;
 
     protected function isFileOpen(): bool

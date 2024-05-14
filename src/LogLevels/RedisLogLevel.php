@@ -28,21 +28,31 @@ class RedisLogLevel implements LevelInterface
 
     public function getName(): string
     {
-        return match ($this->value) {
-            '.' => 'Debug',
-            '-' => 'Verbose',
-            '*' => 'Notice',
-            '#' => 'Warning',
-            default => $this->value,
-        };
+        switch ($this->value) {
+            case '.':
+                return 'Debug';
+            case '-':
+                return 'Verbose';
+            case '*':
+                return 'Notice';
+            case '#':
+                return 'Warning';
+            default:
+                return $this->value;
+        }
     }
 
     public function getClass(): LevelClass
     {
-        return match ($this->value) {
-            '.', '-', '*' => LevelClass::info(),
-            '#' => LevelClass::warning(),
-            default => LevelClass::none(),
-        };
+        switch ($this->value) {
+            case '.':
+            case '-':
+            case '*':
+                return LevelClass::info();
+            case '#':
+                return LevelClass::warning();
+            default:
+                return LevelClass::none();
+        }
     }
 }

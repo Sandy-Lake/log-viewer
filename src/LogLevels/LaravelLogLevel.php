@@ -43,21 +43,32 @@ class LaravelLogLevel implements LevelInterface
 
     public function getName(): string
     {
-        return match ($this->value) {
-            self::None => 'None',
-            default => ucfirst(strtolower($this->value)),
-        };
+        switch ($this->value) {
+            case self::None:
+                return 'None';
+            default:
+                return ucfirst(strtolower($this->value));
+        }
     }
 
     public function getClass(): LevelClass
     {
-        return match ($this->value) {
-            self::Debug, self::Info => LevelClass::info(),
-            self::Notice => LevelClass::notice(),
-            self::Warning => LevelClass::warning(),
-            self::Error, self::Critical, self::Alert, self::Emergency => LevelClass::danger(),
-            default => LevelClass::none(),
-        };
+        switch ($this->value) {
+            case self::Debug:
+            case self::Info:
+                return LevelClass::info();
+            case self::Notice:
+                return LevelClass::notice();
+            case self::Warning:
+                return LevelClass::warning();
+            case self::Error:
+            case self::Critical:
+            case self::Alert:
+            case self::Emergency:
+                return LevelClass::danger();
+            default:
+                return LevelClass::none();
+        }
     }
 
     public static function caseValues(): array

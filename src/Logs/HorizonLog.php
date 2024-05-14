@@ -21,7 +21,9 @@ class HorizonLog extends Log
     protected function fillMatches(array $matches = []): void
     {
         $datetime = $this->parseDateTime($matches['datetime'] ?? null);
-        $this->datetime = $datetime?->setTimezone(LogViewer::timezone());
+        if ($datetime !== null) {
+            $this->datetime = $datetime->setTimezone(LogViewer::timezone());
+        }
 
         $this->level = $matches['level'];
         $this->message = $matches['message'];
@@ -34,7 +36,14 @@ class HorizonLog extends Log
 
     public static function matches(string $text, ?int &$timestamp = null, ?string &$level = null): bool
     {
-        return parent::matches($text, $timestamp, $level)
-            || (str_contains($text, 'Horizon started successfully') && throw new SkipLineException);
+        if (parent::matches($text, $timestamp, $level)) {
+            return true;
+        }
+
+        if (strpos($text, 'Horizon started successfully') !== false) {
+            throw new SkipLineException();
+        }
+
+        return false;
     }
 }

@@ -35,11 +35,14 @@ class HorizonStatusLevel implements LevelInterface
 
     public function getClass(): LevelClass
     {
-        return match (strtolower($this->value)) {
-            'processing', 'running' => LevelClass::info(),
-            'processed', 'done' => LevelClass::success(),
-            'failed', 'fail' => LevelClass::danger(),
-            default => LevelClass::none(),
-        };
+        $lowerValue = strtolower($this->value);
+
+        return $lowerValue === 'processing' || $lowerValue === 'running'
+            ? LevelClass::info()
+            : ($lowerValue === 'processed' || $lowerValue === 'done'
+                ? LevelClass::success()
+                : ($lowerValue === 'failed' || $lowerValue === 'fail'
+                    ? LevelClass::danger()
+                    : LevelClass::none()));
     }
 }

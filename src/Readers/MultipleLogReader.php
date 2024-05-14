@@ -21,7 +21,7 @@ class MultipleLogReader
     protected string $direction;
     protected ?array $exceptLevels = null;
 
-    public function __construct(mixed $files)
+    public function __construct($files)
     {
         if ($files instanceof LogFile) {
             $this->fileCollection = new LogFileCollection([$files]);
@@ -135,11 +135,6 @@ class MultipleLogReader
         );
     }
 
-    /**
-     * Get the logs from this file collection.
-     *
-     * @return array|Log[]
-     */
     public function get(?int $limit = null): array
     {
         $skip = $this->skip ?? null;

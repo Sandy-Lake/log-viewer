@@ -167,8 +167,6 @@ class IndexedLogReader extends BaseLogReader implements LogReaderInterface
     }
 
     /**
-     * @return array|LevelCount[]
-     *
      * @throws \Exception
      */
     public function getLevelCounts(): array
@@ -186,8 +184,6 @@ class IndexedLogReader extends BaseLogReader implements LogReaderInterface
     }
 
     /**
-     * @return array|Log[]
-     *
      * @throws CannotOpenFileException
      */
     public function get(?int $limit = null): array

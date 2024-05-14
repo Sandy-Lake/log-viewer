@@ -42,11 +42,16 @@ class SupervisorLogLevel implements LevelInterface
 
     public function getClass(): LevelClass
     {
-        return match ($this->value) {
-            'info', 'debug', 'trace', 'blather' => LevelClass::info(),
-            'warning' => LevelClass::warning(),
-            'critical', 'error' => LevelClass::danger(),
-            default => LevelClass::none(),
-        };
+        $lowerValue = strtolower($this->value);
+
+        if (in_array($lowerValue, ['info', 'debug', 'trace', 'blather'])) {
+            return LevelClass::info();
+        } elseif ($lowerValue === 'warning') {
+            return LevelClass::warning();
+        } elseif (in_array($lowerValue, ['critical', 'error'])) {
+            return LevelClass::danger();
+        } else {
+            return LevelClass::none();
+        }
     }
 }
