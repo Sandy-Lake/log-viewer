@@ -35,8 +35,8 @@ class LogFolder
 
     public function isRoot(): bool
     {
-        return empty($this->path)
-            || $this->path === rtrim(LogViewer::basePathForLogs(), DIRECTORY_SEPARATOR);
+        return empty(dirname($this->files()->first()->path))
+            || dirname($this->files()->first()->path) === rtrim(LogViewer::basePathForLogs(), DIRECTORY_SEPARATOR);
     }
 
     public function cleanPath(): string
@@ -45,7 +45,7 @@ class LogFolder
             return 'root';
         }
 
-        $folder = $this->path;
+        $folder = dirname($this->files()->first()->path);
 
         $folder = str_replace(LogViewer::basePathForLogs(), 'root'.DIRECTORY_SEPARATOR, $folder);
 

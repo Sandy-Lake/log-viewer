@@ -8,7 +8,7 @@ use Opcodes\LogViewer\Logs\Log;
 
 interface LogReaderInterface
 {
-    public static function instance(LogFile $file): self;
+    public static function instance(LogFile $file);
 
     public static function clearInstance(LogFile $file): void;
 

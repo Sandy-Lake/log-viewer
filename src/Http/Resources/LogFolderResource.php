@@ -16,7 +16,7 @@ class LogFolderResource extends JsonResource
     {
         return [
             'identifier' => $this->identifier,
-            'path' => $this->path,
+            'path' => dirname($this->files()->first()->path),
             'clean_path' => $this->cleanPath(),
             'is_root' => $this->isRoot(),
             'earliest_timestamp' => $this->earliestTimestamp(),
